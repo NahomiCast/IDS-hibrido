@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime
 from .models import Evento
+from .analysis.engine import analyze_event
 
 @csrf_exempt
 def ingest_evento(request):
@@ -20,4 +21,10 @@ def ingest_evento(request):
         action=data['action']
     )
 
-    return JsonResponse({'status': 'ok', 'id': evento.id})
+    alerts = analyze_event(evento)
+
+    return JsonResponse({
+        'status': 'ok',
+        'id': evento.id,
+        'alerts': alerts
+    })
