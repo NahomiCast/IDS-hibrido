@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IDS Dashboard</title>
+</head>
+<body>
+
+<h1>🚨 Alertas</h1>
+<ul>
+    {% for alerta in alertas %}
+        <li>
+            {{ alerta.timestamp }} - {{ alerta.alert_type }} - {{ alerta.source_ip }}
+        </li>
+    {% endfor %}
+</ul>
+
+<h1>📡 Eventos</h1>
+<ul>
+    {% for evento in eventos %}
+        <li>
+            {{ evento.timestamp }} - {{ evento.source_ip }} → {{ evento.destination_port }}
+        </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

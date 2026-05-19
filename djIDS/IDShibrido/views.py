@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+
 import json
 from datetime import datetime
 
@@ -10,6 +11,7 @@ from .analysis.engine import analyze_event
 
 @csrf_exempt
 def ingest_evento(request):
+
     if request.method != 'POST':
         return JsonResponse({'error': 'POST required'}, status=405)
 
@@ -37,3 +39,16 @@ def ingest_evento(request):
         'id': evento.id,
         'alerts': alerts
     })
+
+
+def dashboard(request):
+
+    eventos = Evento.objects.order_by('-timestamp')[:20]
+    alertas = Alerta.objects.order_by('-timestamp')[:20]
+
+    context = {
+        'eventos': eventos,
+        'alertas': alertas
+    }
+
+    return render(request, 'dashboard.html', context)
