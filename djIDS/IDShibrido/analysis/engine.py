@@ -1,4 +1,5 @@
-from .rules import detect_port_scan
+
+from .rules import detect_port_scan, detect_brute_force
 
 def analyze_event(evento):
     alerts = []
@@ -8,6 +9,13 @@ def analyze_event(evento):
             'type': 'PORT_SCAN',
             'source_ip': evento.source_ip,
             'severity': 'high'
+        })
+
+    if detect_brute_force(evento.source_ip):
+        alerts.append({
+            'type': 'BRUTE_FORCE',
+            'source_ip': evento.source_ip,
+            'severity': 'critical'
         })
 
     return alerts

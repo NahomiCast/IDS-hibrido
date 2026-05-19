@@ -3,8 +3,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime
-from .models import Evento
+
+from .models import Evento, Alerta
 from .analysis.engine import analyze_event
+
 
 @csrf_exempt
 def ingest_evento(request):
@@ -22,6 +24,13 @@ def ingest_evento(request):
     )
 
     alerts = analyze_event(evento)
+
+    for alert in alerts:
+        Alerta.objects.create(
+            source_ip=alert['source_ip'],
+            alert_type=alert['type'],
+            severity=alert['severity']
+        )
 
     return JsonResponse({
         'status': 'ok',
