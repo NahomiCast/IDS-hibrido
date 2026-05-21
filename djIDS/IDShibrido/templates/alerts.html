@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="table-container">
+
+    <h1>🚨 Alertas Detectadas</h1>
+
+    <table class="alerts-table">
+
+        <thead>
+            <tr>
+                <th>Hora</th>
+                <th>Tipo</th>
+                <th>IP Origen</th>
+                <th>Severidad</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for alerta in alertas %}
+
+            <tr>
+
+                <td>{{ alerta.timestamp }}</td>
+
+                <td>{{ alerta.alert_type }}</td>
+
+                <td>{{ alerta.source_ip }}</td>
+
+                <td>
+                    <span class="severity {{ alerta.severity|lower }}">
+                        {{ alerta.severity }}
+                    </span>
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

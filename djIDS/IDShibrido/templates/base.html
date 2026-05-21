@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>IDS Híbrido</title>
+
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <h1>TRÁFICO SEGURO</h1>
+            <p>IDS HÍBRIDO</p>
+        </div>
+
+        <div class="nav-links">
+            <a href="/api/dashboard/">Métricas</a>
+            <a href="/api/alerts/">Alertas</a>
+            <a href="/api/traffic/">Eventos</a>
+            <a href="#">Reglas</a>
+        </div>
+
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+
+
+</body>
+</html>

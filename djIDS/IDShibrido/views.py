@@ -7,7 +7,10 @@ from datetime import datetime
 
 from .models import Evento, Alerta
 from .analysis.engine import analyze_event
+from django.shortcuts import render
 
+
+from django.http import HttpResponse
 
 @csrf_exempt
 def ingest_evento(request):
@@ -41,14 +44,66 @@ def ingest_evento(request):
     })
 
 
+# =========================
+# DASHBOARD
+# =========================
+
 def dashboard(request):
 
-    eventos = Evento.objects.order_by('-timestamp')[:20]
-    alertas = Alerta.objects.order_by('-timestamp')[:20]
+    eventos = Evento.objects.order_by('-timestamp')[:10]
+    alertas = Alerta.objects.order_by('-timestamp')[:10]
+
+    total_eventos = Evento.objects.count()
+    total_alertas = Alerta.objects.count()
+
+    port_scans = Alerta.objects.filter(
+        alert_type='PORT_SCAN'
+    ).count()
+
+    brute_force = Alerta.objects.filter(
+        alert_type='BRUTE_FORCE'
+    ).count()
 
     context = {
         'eventos': eventos,
-        'alertas': alertas
+        'alertas': alertas,
+        'total_eventos': total_eventos,
+        'total_alertas': total_alertas,
+        'port_scans': port_scans,
+        'brute_force': brute_force,
     }
 
     return render(request, 'dashboard.html', context)
+
+
+# =========================
+# ALERTS VIEW
+# =========================
+
+#def alerts_view(request):
+
+    #alertas = Alerta.objects.order_by('-timestamp')
+
+    #return render(request, 'alerts.html', {
+   #     'alertas': alertas
+  #  })
+def alerts_view(request):
+
+    alertas = Alerta.objects.all().order_by('-timestamp')
+
+    return render(request, 'alerts.html', {
+        'alertas': alertas
+    })
+
+# =========================
+# EVENTS VIEW
+# =========================
+
+def events_view(request):
+
+    eventos = Evento.objects.all().order_by('-timestamp')
+   # return HttpResponse("EVENTS VIEW FUNCIONA")
+
+    return render(request, 'events.html', {
+        'eventos': eventos
+    })

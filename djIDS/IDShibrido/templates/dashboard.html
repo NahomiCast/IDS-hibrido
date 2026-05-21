@@ -1,27 +1,56 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>IDS Dashboard</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-<h1>🚨 Alertas</h1>
-<ul>
-    {% for alerta in alertas %}
-        <li>
-            {{ alerta.timestamp }} - {{ alerta.alert_type }} - {{ alerta.source_ip }}
-        </li>
-    {% endfor %}
-</ul>
+{% block content %}
 
-<h1>📡 Eventos</h1>
-<ul>
-    {% for evento in eventos %}
-        <li>
-            {{ evento.timestamp }} - {{ evento.source_ip }} → {{ evento.destination_port }}
-        </li>
-    {% endfor %}
-</ul>
+<div class="dashboard-container">
 
-</body>
-</html>
+    <div class="metric-card">
+        <h2>Total Eventos</h2>
+        <p>{{ total_eventos }}</p>
+    </div>
+
+    <div class="metric-card">
+        <h2>Total Alertas</h2>
+        <p>{{ total_alertas }}</p>
+    </div>
+
+    <div class="metric-card">
+        <h2>Port Scans</h2>
+        <p>{{ port_scans }}</p>
+    </div>
+
+    <div class="metric-card">
+        <h2>Brute Force</h2>
+        <p>{{ brute_force }}</p>
+    </div>
+
+</div>
+
+<div class="chart-container">
+
+    <div class="chart-card">
+        <h2>Tipos de Alertas</h2>
+
+        <canvas id="alertsChart"></canvas>
+    </div>
+
+</div>
+
+<script>
+
+const ctx = document.getElementById('alertsChart');
+
+new Chart(ctx, {
+    type: 'pie',
+
+    data: {
+        labels: ['Port Scan', 'Brute Force'],
+        datasets: [{
+            data: [{{ port_scans }}, {{ brute_force }}]
+        }]
+    }
+});
+
+</script>
+
+{% endblock %}

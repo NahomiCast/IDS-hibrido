@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="table-container">
+
+    <h1>📡 Eventos de Red</h1>
+
+    <table class="events-table">
+
+        <thead>
+            <tr>
+                <th>Hora</th>
+                <th>IP Origen</th>
+                <th>Puerto</th>
+                <th>Protocolo</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for evento in eventos %}
+
+            <tr>
+
+                <td>{{ evento.timestamp }}</td>
+
+                <td>{{ evento.source_ip }}</td>
+
+                <td>{{ evento.destination_port }}</td>
+
+                <td>
+                    <span class="protocol">
+                        {{ evento.protocol }}
+                    </span>
+                </td>
+
+                <td>
+                    <span class="action">
+                        {{ evento.action }}
+                    </span>
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}
