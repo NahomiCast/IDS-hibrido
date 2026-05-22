@@ -1,16 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 import json
 from datetime import datetime
 
-from .models import Evento, Alerta
+from .models import Evento, Alerta, RuleConfig
 from .analysis.engine import analyze_event
-from django.shortcuts import render
-
-
-from django.http import HttpResponse
 
 @csrf_exempt
 def ingest_evento(request):
@@ -106,4 +102,26 @@ def events_view(request):
 
     return render(request, 'events.html', {
         'eventos': eventos
+    })
+#=========================
+#Rules
+#=======================
+def rules_view(request):
+
+    rules = RuleConfig.objects.all()
+
+    if request.method == 'POST':
+
+        for rule in rules:
+
+            new_value = request.POST.get(rule.key)
+
+            if new_value:
+                rule.value = int(new_value)
+                rule.save()
+
+        return redirect('/api/rules/')
+
+    return render(request, 'rules.html', {
+        'rules': rules
     })

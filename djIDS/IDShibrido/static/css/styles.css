@@ -167,3 +167,17 @@ body {
     border-radius: 8px;
 }
 
+.save-btn {
+    background-color: #2e4fe0;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.save-btn:hover {
+    background-color: #1d38b5;
+}
+
