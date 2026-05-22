@@ -60,16 +60,59 @@ def dashboard(request):
         alert_type='BRUTE_FORCE'
     ).count()
 
+    # ========= DONA / RIESGO =========
+
+    critical_count = Alerta.objects.filter(
+        severity='critical'
+    ).count()
+
+    high_count = Alerta.objects.filter(
+        severity='high'
+    ).count()
+
+    medium_count = Alerta.objects.filter(
+        severity='medium'
+    ).count()
+
+    low_count = Alerta.objects.filter(
+        severity='low'
+    ).count()
+
+    risk_score = (
+        critical_count * 40 +
+        high_count * 25 +
+        medium_count * 15 +
+        low_count * 5
+    )
+
+    risk_score = min(risk_score, 100)
+    safe_score = 100 - risk_score
+
+    # ================================
+
     context = {
         'eventos': eventos,
         'alertas': alertas,
+
         'total_eventos': total_eventos,
         'total_alertas': total_alertas,
+
         'port_scans': port_scans,
         'brute_force': brute_force,
+
+        'risk_score': risk_score,
+        'safe_score': safe_score,
+        'critical_count': critical_count,
+        'high_count': high_count,
+        'medium_count': medium_count,
+        'low_count': low_count,
     }
 
-    return render(request, 'dashboard.html', context)
+    return render(
+        request,
+        'dashboard.html',
+        context
+    )
 
 
 # =========================

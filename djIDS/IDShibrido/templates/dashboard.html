@@ -26,29 +26,127 @@
 
 </div>
 
+
+<!-- ========================= -->
+<!-- CHARTS -->
+<!-- ========================= -->
+
 <div class="chart-container">
 
+    <!-- RISK -->
     <div class="chart-card">
+
+        <h2>Nivel de Riesgo</h2>
+        <h1 class="risk-score">
+            Riesgo General: {{ risk_score }}%
+        </h1>
+        <h1 class="risk-score
+        {% if risk_score < 25 %}
+        low-risk
+        {% elif risk_score < 50 %}
+        medium-risk
+        {% elif risk_score < 75 %}
+        high-risk
+        {% else %}
+        critical-risk
+        {% endif %}
+        ">
+       
+
+        <canvas id="riskChart" width="300" height="300"></canvas>
+
+    </div>
+
+    <!-- ALERT TYPES -->
+    <div class="chart-card">
+
         <h2>Tipos de Alertas</h2>
 
         <canvas id="alertsChart"></canvas>
+
     </div>
 
 </div>
 
+
+<!-- ========================= -->
+<!-- RISK CHART -->
+<!-- ========================= -->
+
 <script>
 
-const ctx = document.getElementById('alertsChart');
+    const riskCtx = document.getElementById('riskChart');
+    
+    new Chart(riskCtx, {
+    
+        type: 'doughnut',
+    
+        data: {
+    
+            labels: [
+                'LOW',
+                'MEDIUM',
+                'HIGH',
+                'CRITICAL'
+            ],
+    
+            datasets: [{
+    
+                data: [
+                    {{ low_count }},
+                    {{ medium_count }},
+                    {{ high_count }},
+                    {{ critical_count }}
+                ],
+                backgroundColor: [
+                    '#34A853', // LOW → verde
+                    '#FBBC05', // MEDIUM → amarillo
+                    '#FF8800', // HIGH → naranja
+                    '#EA4335'  // CRITICAL → rojo
+                ]
+    
+            }]
+        }
+    
+    });
+    
+    </script>
 
-new Chart(ctx, {
+
+<!-- ========================= -->
+<!-- ALERTS CHART -->
+<!-- ========================= -->
+
+<script>
+
+const alertsCtx = document.getElementById('alertsChart');
+
+new Chart(alertsCtx, {
+
     type: 'pie',
 
     data: {
-        labels: ['Port Scan', 'Brute Force'],
+
+        labels: [
+            'Port Scan',
+            'Brute Force'
+        ],
+
         datasets: [{
-            data: [{{ port_scans }}, {{ brute_force }}]
+
+            data: [
+                {{ port_scans }},
+                {{ brute_force }}
+            ],
+
+            backgroundColor: [
+                '#4285F4',
+                '#EA4335'
+            ]
+
         }]
     }
+
 });
 
 </script>
