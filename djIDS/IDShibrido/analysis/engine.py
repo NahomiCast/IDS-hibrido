@@ -1,5 +1,12 @@
-from .rules import detect_port_scan, detect_brute_force
-from IDShibrido.models import Alerta
+from .rules import (
+    detect_port_scan,
+    detect_brute_force
+)
+
+from .heuristics import (
+    detect_traffic_anomaly
+)
+
 
 def analyze_event(evento):
 
@@ -43,4 +50,23 @@ def analyze_event(evento):
             'severity': 'critical'
         })
 
+    # =========================
+    # TRAFFIC ANOMALY
+    # =========================
+
+    anomaly_detected = detect_traffic_anomaly(
+        evento.source_ip
+    )
+
+    print("Anomaly:", anomaly_detected)
+
+    if anomaly_detected:
+
+        alerts.append({
+            'type': 'TRAFFIC_ANOMALY',
+            'source_ip': evento.source_ip,
+            'severity': 'medium'
+        })
+
     return alerts
+

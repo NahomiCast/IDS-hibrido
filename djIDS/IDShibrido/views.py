@@ -27,7 +27,7 @@ def ingest_evento(request):
     )
 
     alerts = analyze_event(evento)
-    alerts = analyze_event(evento)
+    #alerts = analyze_event(evento)
 
     print("ALERTS RETURNED:", alerts)
 
@@ -63,6 +63,10 @@ def dashboard(request):
 
     brute_force = Alerta.objects.filter(
         alert_type='BRUTE_FORCE'
+    ).count()
+
+    anomalies = Alerta.objects.filter(
+    alert_type='TRAFFIC_ANOMALY'
     ).count()
 
     # ========= DONA / RIESGO =========
@@ -111,6 +115,7 @@ def dashboard(request):
         'high_count': high_count,
         'medium_count': medium_count,
         'low_count': low_count,
+        'anomalies': anomalies,
     }
 
     return render(

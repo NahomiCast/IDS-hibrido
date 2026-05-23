@@ -24,6 +24,11 @@
         <p>{{ brute_force }}</p>
     </div>
 
+    <div class="metric-card">
+        <h2>Anomalías</h2>
+        <p>{{ anomalies }}</p>
+    </div>
+
 </div>
 
 
@@ -67,6 +72,8 @@
     </div>
 
 </div>
+
+
 
 
 <!-- ========================= -->
@@ -127,21 +134,26 @@ new Chart(alertsCtx, {
 
     data: {
 
+        
         labels: [
             'Port Scan',
-            'Brute Force'
+            'Brute Force',
+            'Traffic Anomaly'
         ],
 
         datasets: [{
-
             data: [
                 {{ port_scans }},
-                {{ brute_force }}
+                {{ brute_force }},
+                {{ anomalies }}
             ],
+
+        
 
             backgroundColor: [
                 '#4285F4',
-                '#EA4335'
+                '#EA4335',
+                '#FBBC05'
             ]
 
         }]

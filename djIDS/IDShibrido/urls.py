@@ -14,4 +14,5 @@ urlpatterns = [
     path('alerts/', alerts_view),
     path('traffic/', events_view),
     path('rules/', rules_view),
+    
 ]
