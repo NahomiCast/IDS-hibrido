@@ -3,8 +3,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 import json
-from datetime import datetime
-
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import make_aware
+from django.utils import timezone
 from .models import Evento, Alerta, RuleConfig
 from .analysis.engine import analyze_event
 
@@ -17,7 +18,8 @@ def ingest_evento(request):
     data = json.loads(request.body)
 
     evento = Evento.objects.create(
-        timestamp=datetime.fromisoformat(data['timestamp']),
+    
+        timestamp=timezone.now(),
         source_ip=data['source_ip'],
         destination_port=data['destination_port'],
         protocol=data['protocol'],
@@ -25,6 +27,9 @@ def ingest_evento(request):
     )
 
     alerts = analyze_event(evento)
+    alerts = analyze_event(evento)
+
+    print("ALERTS RETURNED:", alerts)
 
     for alert in alerts:
         Alerta.objects.create(
