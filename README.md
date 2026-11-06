@@ -1,4 +1,4 @@
-#ENGLISH
+## ENGLISH
 # Hybrid-NIDS: Network Intrusion Detection System
 
 A lightweight, hybrid Network Intrusion Detection System (NIDS) built with Python, Scapy, and Django. The system combines deterministic signature-based detection with traffic volume heuristic analysis to identify network reconnaissance and volumetric anomalies in real time, featuring an interactive management dashboard.
@@ -123,7 +123,7 @@ Credential Management: Secrets, database passwords, and environment configuratio
 Packet Drop Mitigation: High-volume network scanning can strain database I/O. For high-throughput environments, consider deploying an event queue (e.g., Redis / Celery) or bulk-inserting packet batches.
 
 
-#Español
+## Español
 # IDS-hibrido
 Sistema de Detección de Intrusos híbrido inspirado en Snort, con análisis por reglas y heurísticas, métricas de precisión y dashboard web.
 # Hybrid-IDS: Network Intrusion Detection System
@@ -136,7 +136,7 @@ Un Sistema de Detección de Intrusiones en Red (NIDS) híbrido desarrollado en P
 
 El sistema implementa una arquitectura desacoplada en tres capas principales:
 
-|  Capa de Captura (L3/L4)  |
+              |  Capa de Captura (L3/L4)  |
               |     (Scapy Engine)        |
               +-------------+-------------+
                             |
