@@ -114,9 +114,10 @@ sudo $(which python) IDShibrido/Sniffer/capture.py
 Detection Threshold Configuration (RuleConfig)
 Thresholds are stored in the database and can be modified at runtime via the web interface:
 
-Port Scanning->PORT_SCAN_THRESHOLD: Maximum distinct destination ports targeted within a 60-second window.
-Brute Force->BRUTE_FORCE_THRESHOLD: Consecutive failed login events permitted per source IP within 60s.
-Traffic Anomaly->ANOMALY_THRESHOLD: Maximum packet volume tolerated from a single source address within 60s.
+Port Scanning: Maximum distinct destination ports targeted within a 60-second window.
+Brute Force: Consecutive failed login events permitted per source IP within 60s.
+Traffic Anomaly: Maximum packet volume tolerated from a single source address within 60s.
+
 Security & Operational Notes
 Credential Management: Secrets, database passwords, and environment configurations are decoupled from source control using environment variables (.env).
 
@@ -222,6 +223,6 @@ python manage.py runserver
 python IDShibrido/Sniffer/capture.py
 
 ------------Parámetros de Detección Configurables (RuleConfig)----------------------------
-Port Scanning->PORT_SCAN_THRESHOLD: Cantidad máxima de puertos distintos consultados en 60s.
-Brute Force->BRUTE_FORCE_THRESHOLD: Fallos de autenticación consecutivos tolerados en 60s.
-Traffic Anomaly->ANOMALY_THRESHOLD: Volumen máximo de paquetes tolerados por IP en 60s.
+Port Scanning: Cantidad máxima de puertos distintos consultados en 60s.
+Brute Force: Fallos de autenticación consecutivos tolerados en 60s.
+Traffic Anomaly: Volumen máximo de paquetes tolerados por IP en 60s.
