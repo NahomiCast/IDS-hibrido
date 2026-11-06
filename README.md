@@ -8,7 +8,7 @@ A lightweight, hybrid Network Intrusion Detection System (NIDS) built with Pytho
 ## Architecture Overview
 
 The system implements a decoupled three-tier architecture:
-              +---------------------------+
+                       
               | Packet Capture Tier (L3/4)|
               |       (Scapy Engine)      |
               +-------------+-------------+
@@ -22,19 +22,19 @@ The system implements a decoupled three-tier architecture:
          +------------------+------------------+
          |                                     |
          v                                     v
-+------------------------+           +------------------------+
-| Signature Engine       |           | Heuristic Engine       |
-| - Horizontal Port Scan |           | - Traffic Burst Rate   |
-| - Brute Force Correl.  |           | - Volume Anomaly (PPS) |
-+------------------------+           +------------------------+
-|                                     |
-+------------------+------------------+
-|
-v
-+---------------------------+
-| Persistence & Web Consoles|
-| (PostgreSQL / Django ORM) |
-+---------------------------+
+    +------------------------+           +------------------------+
+    | Signature Engine       |           | Heuristic Engine       |
+    | - Horizontal Port Scan |           | - Traffic Burst Rate   |
+    | - Brute Force Correl.  |           | - Volume Anomaly (PPS) |
+    +------------------------+           +------------------------+
+                |                                     |
+                +------------------+------------------+
+                                   |
+                                   v
+                     +---------------------------+
+                     | Persistence & Web Consoles|
+                     | (PostgreSQL / Django ORM) |
+                     +---------------------------+
 ### 1. Ingestion Tier (`capture.py`)
 * Leverages raw socket capture via `Scapy` operating in promiscuous mode.
 * Extracts core L3/L4 metadata (Source IP, Destination Port, Protocol, TCP flags).
@@ -149,19 +149,19 @@ El sistema implementa una arquitectura desacoplada en tres capas principales:
          +------------------+------------------+
          |                                     |
          v                                     v
-+------------------------+           +------------------------+
-| Capa de Firmas (Rules) |           | Capa Heurística        |
-| - Escaneo de Puertos   |           | - Anomalías de Volumen |
-| - Intentos F. Bruta    |           | - Ráfagas de Tráfico   |
-+------------------------+           +------------------------+
-|                                     |
-+------------------+------------------+
-|
-v
-+---------------------------+
-|  Persistencia y Consola   |
-|  (Django ORM + Dashboard) |
-+---------------------------+
+         +------------------------+           +------------------------+
+         | Capa de Firmas (Rules) |           | Capa Heurística        |
+         | - Escaneo de Puertos   |           | - Anomalías de Volumen |
+         | - Intentos F. Bruta    |           | - Ráfagas de Tráfico   |
+         +------------------------+           +------------------------+
+                     |                                     |
+                     +------------------+------------------+
+                                        |
+                                        v
+                         +---------------------------+
+                         |  Persistencia y Consola   |
+                         |  (Django ORM + Dashboard) |
+                          +---------------------------+
 
 ### 1. Ingestión de Paquetes (`Sniffer`)
 * Captura tráfico en vivo a nivel de sockets crudos mediante `Scapy`.
