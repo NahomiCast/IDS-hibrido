@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="table-container">
+
+    <h1>⚙️ Configuración de Reglas</h1>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <table class="events-table">
+
+            <thead>
+                <tr>
+                    <th>Regla</th>
+                    <th>Valor</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for rule in rules %}
+
+                <tr>
+
+                    <td>{{ rule.key }}</td>
+
+                    <td>
+
+                        <input
+                            type="number"
+                            name="{{ rule.key }}"
+                            value="{{ rule.value }}"
+                        >
+
+                    </td>
+
+                    <td>{{ rule.description }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <br>
+
+        <button class="save-btn" type="submit">
+            Guardar Cambios
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

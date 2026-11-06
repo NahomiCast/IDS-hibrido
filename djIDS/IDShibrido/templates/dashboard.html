@@ -1,0 +1,308 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- ========================= -->
+<!-- METRICS -->
+<!-- ========================= -->
+
+<div class="dashboard-container">
+
+    <div class="metric-card">
+        <h2>Total Eventos</h2>
+        <p>{{ total_eventos }}</p>
+    </div>
+
+    <div class="metric-card">
+        <h2>Total Alertas</h2>
+        <p>{{ total_alertas }}</p>
+    </div>
+
+    <div class="metric-card">
+        <h2>Port Scans</h2>
+        <p>{{ port_scans }}</p>
+    </div>
+
+    <div class="metric-card">
+        <h2>Brute Force</h2>
+        <p>{{ brute_force }}</p>
+    </div>
+
+    <div class="metric-card">
+        <h2>Anomalías</h2>
+        <p>{{ anomalies }}</p>
+    </div>
+
+    <div class="metric-card">
+        <h2>IP Sospechosa</h2>
+
+        {% if top_attacker %}
+            <p style="font-size:20px;">
+                {{ top_attacker.source_ip }}
+            </p>
+
+            <small>
+                {{ top_attacker.total }} eventos
+            </small>
+        {% endif %}
+    </div>
+
+    <div class="metric-card">
+        <h2>Puerto Objetivo</h2>
+
+        {% if top_port %}
+            <p>
+                {{ top_port.destination_port }}
+            </p>
+
+            <small>
+                {{ top_port.total }} ataques
+            </small>
+        {% endif %}
+    </div>
+
+    <div class="metric-card">
+        <h2>Estado IDS</h2>
+
+        <p style="
+            font-size:28px;
+
+            {% if system_status == 'SEGURO' %}
+                color:green;
+            {% elif system_status == 'ALERTA' %}
+                color:goldenrod;
+            {% elif system_status == 'PELIGRO' %}
+                color:orange;
+            {% else %}
+                color:red;
+            {% endif %}
+        ">
+            {{ system_status }}
+        </p>
+    </div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- CHARTS -->
+<!-- ========================= -->
+
+<div class="chart-container">
+
+    <!-- ========================= -->
+    <!-- RISK CHART -->
+    <!-- ========================= -->
+
+    <div class="chart-card">
+
+        <h2>Nivel de Riesgo</h2>
+
+        <h1 class="risk-score
+        {% if risk_score < 25 %}
+            low-risk
+        {% elif risk_score < 50 %}
+            medium-risk
+        {% elif risk_score < 75 %}
+            high-risk
+        {% else %}
+            critical-risk
+        {% endif %}
+        ">
+            Riesgo General: {{ risk_score }}%
+        </h1>
+
+        <canvas id="riskChart" width="300" height="300"></canvas>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- ALERT TYPES -->
+    <!-- ========================= -->
+
+    <div class="chart-card">
+
+        <h2>Tipos de Alertas</h2>
+
+        <canvas id="alertsChart"></canvas>
+
+    </div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- RECENT ALERTS -->
+<!-- ========================= -->
+
+<div class="table-container">
+
+    <h2>Últimas Alertas Detectadas</h2>
+
+    <table class="alerts-table">
+
+        <thead>
+
+            <tr>
+                <th>Hora</th>
+                <th>Tipo</th>
+                <th>IP</th>
+                <th>Severidad</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for alerta in alertas %}
+
+            <tr>
+
+                <td>{{ alerta.timestamp }}</td>
+
+                <td>{{ alerta.alert_type }}</td>
+
+                <td>{{ alerta.source_ip }}</td>
+
+                <td>
+
+                    <span class="severity {{ alerta.severity }}">
+                        {{ alerta.severity }}
+                    </span>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- RESET BUTTON -->
+<!-- ========================= -->
+
+<div style="margin: 30px;">
+
+    <a href="/api/reset/" class="reset-btn">
+        RESET IDS
+    </a>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- CHART JS -->
+<!-- ========================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<!-- ========================= -->
+<!-- RISK CHART -->
+<!-- ========================= -->
+
+<script>
+
+const riskCtx = document.getElementById('riskChart');
+
+new Chart(riskCtx, {
+
+    type: 'doughnut',
+
+    data: {
+
+        labels: [
+            'LOW',
+            'MEDIUM',
+            'HIGH',
+            'CRITICAL'
+        ],
+
+        datasets: [{
+
+            data: [
+                {{ low_count }},
+                {{ medium_count }},
+                {{ high_count }},
+                {{ critical_count }}
+            ],
+
+            backgroundColor: [
+                '#34A853',
+                '#FBBC05',
+                '#FF8800',
+                '#EA4335'
+            ]
+
+        }]
+    }
+
+});
+
+</script>
+
+
+<!-- ========================= -->
+<!-- ALERT TYPES CHART -->
+<!-- ========================= -->
+
+<script>
+
+const alertsCtx = document.getElementById('alertsChart');
+
+new Chart(alertsCtx, {
+
+    type: 'pie',
+
+    data: {
+
+        labels: [
+            'Port Scan',
+            'Brute Force',
+            'Anomaly'
+        ],
+
+        datasets: [{
+
+            data: [
+                {{ port_scans }},
+                {{ brute_force }},
+                {{ anomalies }}
+            ],
+
+            backgroundColor: [
+                '#4285F4',
+                '#EA4335',
+                '#FBBC05'
+            ]
+
+        }]
+    }
+
+});
+
+</script>
+
+
+<!-- ========================= -->
+<!-- AUTO REFRESH -->
+<!-- ========================= -->
+
+<script>
+
+setTimeout(function() {
+
+    location.reload();
+
+}, 5000);
+
+</script>
+
+{% endblock %}
